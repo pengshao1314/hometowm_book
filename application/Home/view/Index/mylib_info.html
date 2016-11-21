@@ -1,0 +1,110 @@
+{extend name="Public/base"/}
+{block name="title"}我的图书馆{/block}
+{block name="link"}
+
+
+{/block}
+{block name="content"}
+<section style="margin-top: 50px;">
+    <table class="table table-condensed">
+        <tr>
+            <th rowspan="4"><img src="/hometowm_book/public/static/image/libimg.png"></th>
+            <td>姓名：{$name}</td>
+        </tr>
+        <tr>
+            <td>证件号：{$num}</td>
+        </tr>
+        <tr>
+            <td>条码号：{$num}</td>
+        </tr>
+        <tr>
+            <td>读者类型：{$student}</td>
+        </tr>
+
+        <tr>
+            <td>所属专业：{$college}</td>
+            <td>办证日期：{$time_cteate}</td>
+        </tr>
+        <tr>
+            <td>生效日期：{$time_can}</td>
+            <td>失效日期：{$time_over}</td>
+        </tr>
+        <tr>
+            <td>欠款金额：{$fine}</td>
+            <td>累计借书：{$bro_count}</td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#modifyPassModal">修改密码</button>
+            </td>
+        </tr>
+
+
+    </table>
+</section>
+
+<div class="modal fade" id="modifyPassModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="{:url('Home/index/modifyPass')}" id="modifyPass_form" role="form" method="post">
+                    <div class="form-group">
+                        <label for="old_passwd">原密码</label>
+                        <input type="text" class="form-control" name="old_passwd" id="old_passwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_passwd">新密码</label>
+                        <input type="password" class="form-control" name="new_passwd" id="new_passwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="chk_passwd">确认密码</label>
+                        <input type="password" class="form-control" name="chk_passwd" id="chk_passwd">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="padding-bottom: 5px;margin-top: -20px;">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" id="modifyPassBtn" class="btn btn-primary">
+                    提交修改
+                </button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+{/block}
+{block name="script"}
+<script>
+    $(document).ready(function () {
+        $('#modifyPassBtn').click(function () {
+            var action = $('#modifyPass_form').attr('action');
+            var Formattr = $('#modifyPass_form').serialize();
+            console.log(Formattr);
+            $.post(action, Formattr, function (data, status) {
+
+                console.log(data);
+                if (data == '您的密码修改成功,请重新登录') {
+                    alert('您的密码修改成功,请重新登录');
+                    setTimeout(function () {
+                        window.location.href="{:url('home/index/index')}"
+                    }, 200);
+                }
+                else if (data == '旧密码输入错误') {
+                    alert('旧密码输入错误,请重新输入');
+                }
+                else if (data == '新密码与确认密码不一致') {
+                    alert('新密码与确认密码不一致,请重新输入');
+                }
+                else {
+                    alert('服务器出错');
+                }
+
+                //setTimeout("window.location.href=\"{:url('home/index/index')}\"",200);
+            });
+        });
+    });
+</script>
+
+{/block}

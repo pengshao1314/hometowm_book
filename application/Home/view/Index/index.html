@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书馆</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable = no">
+    <link rel="stylesheet" href="/hometowm_book/public/static/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="/hometowm_book/public/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/hometowm_book/public/static/css/stycss.css">
+
+</head>
+<body>
+
+<div id="loadingGif">
+    <img src="/hometowm_book/public/static/image/ajax-loader.gif">
+    <p style="color: white;">加载中...</p>
+</div>
+
+<div id="warningTip" class="alert alert-warning text-center">
+    <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 20px;"></span>
+    <span style="vertical-align: top;">hello world</span>
+</div>
+
+<!--搜索栏开始-->
+<header>
+    <section class="panel panel-default container-fluid" style="margin-bottom: 0">
+        <div class="panel-heading row">
+            <form class="bs-example bs-example-form col-md-10 col-xs-10" style="padding:0">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class=" glyphicon glyphicon-search"></span></span>
+                    <input type="search" name="book" class="form-control" placeholder="检阅图书">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </span>
+
+                </div>
+            </form>
+            <span class="col-md-2 col-xs-2 text-center" style="padding: 7px 0 7px 9px;cursor: pointer;"
+                  id="loginBtn">登录</span>
+
+        </div>
+    </section>
+    <section class="modal fade" id="identifier" tabindex="-1" aria-labelledby="identifier" aria-hidden="true">
+        <form class="center-block" action="{:url('Home/index/login')}" method="post">
+            <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </span>
+                <input type="text" class="form-control" placeholder="学号" name="number" value="{$number}" required>
+                <!--<input type="hidden" name="rand">-->
+                <input type="hidden" name="loginType" value="1">
+            </div>
+            <br/>
+            <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-eye-close"></span>
+                    </span>
+                <input type="password" class="form-control" placeholder="默认密码001" name="passwd" value="{$passwd}"
+                       required>
+            </div>
+            <br/>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-lock"></span>
+                </span>
+                <input type="text" class="form-control" name="rand" placeholder="验证码" style="height: 38px;" required>
+                <span class="input-group-addon" style="width: 60px;height: 34px;padding:0">
+                    <img src="/hometowm_book/{$pic}"><!--测试验证码的图片，要修改-->
+                </span>
+            </div>
+
+            <button type="submit" class="btn btn-primary center-block" style="margin-top: 20px;width: 70%;">确定</button>
+
+
+            <div class="formHead">
+                <img src="/hometowm_book/public/static/image/hdImg_b5b.jpg"
+                     style="width: 100%; height: 100%;" alt="红满堂"><!--圆形图片-->
+            </div>
+        </form>
+
+    </section>
+</header>
+<!--搜索栏结束-->
+
+<!--显示信息开始-->
+<section id="book">
+    <div class="panel container-fluid panel-info">
+        <div class="panel-heading">
+            <p class="h4 text-info panel-title"></p>
+        </div>
+        <div>
+            <ul class="ul-book">
+
+            </ul>
+        </div>
+    </div>
+</section>
+<!--显示信息结束-->
+
+<!--底部翻页开始-->
+<footer hidden id="footer">
+    <ul class="pager">
+        <li class="previous"><a href="javascript:void(0)">上一页</a></li>
+        <li class="active"><a href="javascript:void(0)">第1页</a></li>
+        <li class="next"><a href="javascript:void(0)">下一页</a></li>
+    </ul>
+</footer>
+
+<!--底部翻页结束-->
+
+
+<script src="/hometowm_book/public/static/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="/hometowm_book/public/static/js/index.js"></script>
+</body>
+</html>

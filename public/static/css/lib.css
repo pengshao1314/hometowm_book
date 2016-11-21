@@ -1,0 +1,23 @@
+* {
+    font-family: "Microsoft YaHei";
+    font-weight: 400;
+}
+
+.list-group li {
+    width: 100% !important;
+}
+
+.list-group-item div:first-child {
+    display: inline-block;
+    width: 60%;
+    height: 100px;
+
+}
+
+.li-book {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /*width: 60%;*/
+
+}

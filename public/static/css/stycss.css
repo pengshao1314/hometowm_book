@@ -1,0 +1,125 @@
+* {
+    font-family: "Microsoft YaHei";
+    font-weight: 400;
+
+}
+
+#loadingGif {
+    text-align: center;
+    background-color: #282828;
+    opacity: 0.5;
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    position: fixed;
+    top: 150px;
+    left: 40%;
+    display: none;
+    z-index: 1200;
+}
+
+#warningTip {
+    width: 70%;
+    position: absolute;
+    top: 85px;
+    overflow: hidden;
+    left: 50%;
+    margin-left: -35%;
+    margin-top: -26px;
+    z-index: 1200;
+    display: none;
+
+}
+
+#identifier > form {
+    position: relative;
+    border: 1px black solid;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px #3d3d3d;
+    width: 70%;
+    height: 235px;
+    background-color: white;
+    top: 30px;
+    padding: 28px 10px 0 10px;
+
+}
+
+
+
+#identifier .formHead {
+    border: 1px solid #eee;
+    border-radius: 50%;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    top: -255px;
+    margin: 0 auto;
+    z-index: 100;
+
+}
+
+.ul-book {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+}
+
+.li-book {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-top: 2px solid #eee;
+    margin-bottom: -10px !important;
+}
+
+.book-msg {
+    width: 95%;
+    position: relative;
+
+}
+
+.book-msg tr td, .book-msg caption {
+    /*white-space: nowrap;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-msg tr td:first-child {
+    width: 60px;
+}
+
+.bookable-condition tr td {
+    border: none !important;
+}
+
+#concreteBookMsg > div {
+    width: 90%;
+    /*height: 100%;*/
+    position: relative;
+    top: 10px;
+    left: 50%;
+    margin-left: -45%;
+
+}
+
+.pageMiddle a {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+
+}
+
+.form-control:focus {
+    border: 1px solid #ccc;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+
+

@@ -1,0 +1,133 @@
+{extend name="Public/base"/}
+{block name="title"}当前借阅{/block}
+
+{block name="link"}
+<style>
+    * {
+        font-family: "Microsoft YaHei";
+        font-weight: 400;
+    }
+
+    .list-group li {
+        width: 100% !important;
+    }
+
+    .list-group-item div:first-child {
+        display: inline-block;
+        width: 70%;
+        height: 100px;
+
+    }
+
+    .li-book {
+        overflow: hidden;
+        /*white-space: nowrap;*/
+        text-overflow: ellipsis;
+
+    }
+
+    .li-book-right {
+        display: inline-block;
+        width: 70px;
+        height: 100px;
+        float: right;
+        margin-top:10px;
+
+    }
+</style>
+{/block}
+{block name="content"}
+<section>
+    <div class="panel panel-default panel-success">
+
+        <div class="panel-heading text-center ">
+            <h4 class="panel-title">当前借阅</h4>
+        </div>
+
+        <div class="panel-body" style="padding: 0!important;">
+            {if condition="$con eq false"}
+            <span class="text-info h4 center-block">你的当前借阅为空</span>
+            {else/}
+            <ul class="list-group">
+                {volist name="data" id="data"}
+                <li class="list-group-item">
+                    <div>
+                        <h4 class="li-book">{$i}.{$data.bar_num}</h4>
+                        <h4 class="li-book">{$data.book}/{$data.book_a}</h4>
+                        <p class="text-muted text-nowrap">{$data.date_begin} 至 {$data.date_end}</p>
+                        <p class="text-info">{$data.book_place}</p>
+                    </div>
+                    <div class="li-book-right">
+                        <p rel={$data.bar_num}>
+
+                        <button type="button" class="btn btn-primary"
+                                data-toggle="modal" data-target="#idCode" onclick="{$data.method}">续借
+                        </button>
+                        </p>
+                    </div>
+                </li>
+                {/volist}
+            </ul>
+            {/if}
+            <div class="modal fade" id="idCode" tabindex="-1" aria-labelledby="idCode" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                        <span class="modal-title text-info">
+                            验证码
+                        </span>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" name="captcha" class="form-control">
+                            {if condition="$con neq false"}
+                            <img src="/hometowm_book/{$pic}">
+                            {/if}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{/block}
+{block name="script"}
+<script>
+    function getInLib(barcode, check, num) {
+
+        $(".modal-dialog form").on("submit", function (event) {
+            event.preventDefault();
+
+            var action = "{:url('home/bro_present/reNew')}";
+            var time = new Date().getTime();
+            var captcha = $("input[name='captcha']").val().trim();
+            var formattr = 'bar_code=' + barcode + '&check=' + check + '&captcha=' + captcha + '&time=' + time;
+
+
+            if (captcha == "") {
+                return 0;
+            }
+            else {
+
+                $.post(action, formattr, function (data) {
+
+
+                    $("p[rel='" + barcode + "']").html(data);
+                });
+            }
+            $("#idCode").modal("hide");
+
+        });
+
+    }
+
+</script>
+
+{/block}

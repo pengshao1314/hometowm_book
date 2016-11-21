@@ -1,0 +1,73 @@
+{extend name="Public/base"}
+{block name="title"}违章罚款{/block}
+
+{block name="link"}
+<style>
+    * {
+        font-family: "Microsoft YaHei";
+        font-weight: 400;
+    }
+
+    .list-group li {
+        width: 100% !important;
+    }
+
+    .list-group-item div:first-child {
+        display: inline-block;
+        width: 60%;
+        height: 100px;
+
+    }
+
+    .li-book {
+        overflow: hidden;
+        /*white-space: nowrap;*/
+        text-overflow: ellipsis;
+        margin-top: 0;
+
+    }
+    .li-book-right {
+        display: inline-block;
+        width: 30%;
+        height: 100px;
+        float: right;
+
+    }
+</style>
+{/block}
+{block name="content"}
+<section>
+    <div class="panel panel-default panel-success">
+        <div class="panel-heading text-center ">
+            <h4 class="panel-title">违章缴费</h4>
+        </div>
+        {if condition="$con eq false"}
+
+        <span class="text-info h4 center-block">你的罚款记录为空</span>
+
+        {else /}
+        <div class="panel-body" style="padding: 0!important;">
+            <ul class="list-group">
+                {volist name="data" id="d"}
+                <li class="list-group-item">
+                    <div>
+                        <h4 class="li-book">{$d.book_name}/{$d.book_a}</h4>
+                        <p class="text-info">管藏地: {$d.book_p}</p>
+                        <p class="text-info">索书号:{$d.book_tp}</p>
+                        <p class="text-muted text-nowrap">{$d.date_begin} 至 {$d.date_end}</p>
+                    </div>
+                    <div class="li-book-right">
+                        <p class="text-info">条形码:{$d.bar_num}</p>
+                        <p class="text-info">应缴: {$d.fine_s}</p>
+                        <p class="text-info">实缴: {$d.fine_r}</p>
+                        <p class="text-muted">状态: {$d.book_status}</p>
+                    </div>
+
+                </li>
+                {/volist}
+            </ul>
+        </div>
+        {/if}
+    </div>
+</section>
+{/block}
