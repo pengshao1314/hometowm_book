@@ -2,11 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>图书馆</title>
+    <title>Title</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable = no">
     <link rel="stylesheet" href="/hometowm_book/public/static/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="/hometowm_book/public/static/js/jquery.min.js"></script>
-    <link rel="stylesheet" href="/hometowm_book/public/static/css/stycss.css">
+
+    <style>
+        * {
+            font-family: "Microsoft YaHei";
+            font-weight: 400;
+
+        }
+
+        #loadingGif {
+            text-align: center;
+            background-color: #282828;
+            opacity: 0.5;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            position: fixed;
+            top: 150px;
+            left: 40%;
+            display: none;
+            z-index: 1200;
+        }
+
+        #warningTip {
+            width: 70%;
+            position: absolute;
+            top: 85px;
+            overflow: hidden;
+            left: 50%;
+            margin-left: -35%;
+            margin-top: -26px;
+            z-index: 1200;
+            display: none;
+
+        }
+
+        #identifier > form {
+            position: relative;
+            border: 1px black solid;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #3d3d3d;
+            width: 70%;
+            height: 235px;
+            background-color: white;
+            top: 30px;
+            padding: 28px 10px 0 10px;
+
+        }
+
+        #identifier .formHead {
+            border: 1px solid #eee;
+            border-radius: 50%;
+            position: relative;
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            top: -255px;
+            margin: 0 auto;
+            z-index: 100;
+
+        }
+
+
+    </style>
+
+    <style>
+        .ul-book {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+
+        }
+
+        .li-book {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-top: 2px solid #eee;
+            margin-bottom: -10px !important;
+        }
+
+        .book-msg {
+            width: 95%;
+            position: relative;
+
+        }
+
+        .book-msg tr td, .book-msg caption {
+            /*white-space: nowrap;*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .book-msg tr td:first-child {
+            width: 60px;
+        }
+
+        .bookable-condition tr td {
+            border: none !important;
+        }
+
+        #concreteBookMsg > div {
+            width: 90%;
+            /*height: 100%;*/
+            position: relative;
+            top: 10px;
+            left: 50%;
+            margin-left: -45%;
+
+        }
+
+        .pageMiddle a {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+
+        }
+        .form-control:focus{
+            border: 1px solid #ccc;
+            outline: 0;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+
+    </style>
 
 </head>
 <body>
@@ -28,7 +155,7 @@
             <form class="bs-example bs-example-form col-md-10 col-xs-10" style="padding:0">
                 <div class="input-group">
                     <span class="input-group-addon"><span class=" glyphicon glyphicon-search"></span></span>
-                    <input type="search" name="book" class="form-control" placeholder="检阅图书">
+                    <input type="text" name="book" class="form-control" placeholder="检阅图书">
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-default">搜索</button>
                     </span>
@@ -55,8 +182,7 @@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-eye-close"></span>
                     </span>
-                <input type="password" class="form-control" placeholder="默认密码001" name="passwd" value="{$passwd}"
-                       required>
+                <input type="password" class="form-control" placeholder="默认密码001" name="passwd" value="{$passwd}" required>
             </div>
             <br/>
             <div class="input-group">
@@ -110,6 +236,272 @@
 
 
 <script src="/hometowm_book/public/static/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="/hometowm_book/public/static/js/index.js"></script>
+<script>
+    jQuery(function () {
+
+        var tmpValue = {
+            $loginBtn: $("#loginBtn"),
+            $identifier: $("#identifier"),
+            $warningTip: $("#warningTip"),
+            $formLogin: $("#identifier form").eq(0),
+            $searchBook: $(".bs-example").eq(0),
+            $concreteBookMsg: $("#concreteBookMsg"),
+            $loadingGif: $("#loadingGif"),
+            $pagerLi: $(".pager li"),
+
+
+        };
+
+        (function () {
+
+            if(sessionStorage.getItem("pageNum") != undefined){
+                sessionStorage.sumBook -= 20;
+                loadPage(Number(sessionStorage.getItem("pageNum")));
+            }
+
+
+        })();
+
+
+
+
+
+        /**
+         *显示警告信息
+         *
+         * @method warningTipShow
+         * @param t
+         *
+         */
+        function warningTipShow(t) {
+            var text = t || "";
+            tmpValue.$warningTip.find("span").eq(1).text(text);
+            tmpValue.$warningTip.slideDown(400, function () {
+                setTimeout(function () {
+                    tmpValue.$warningTip.slideUp(400)
+                }, 1500);
+            });
+        }
+
+
+        tmpValue.$loginBtn.click(function () {
+
+            if ((localStorage.number != undefined) && (document.cookie == localStorage.cookie)) {
+                location.href = "{:url('Home/index/login')}";
+
+            }
+            tmpValue.$identifier.modal("show");
+        });
+
+        /**
+         * 提交登录信息
+         */
+         
+        /**
+
+        
+        /**
+         *提交搜索书的信息
+         *
+         */
+
+        tmpValue.$searchBook.submit(function (event) {
+            var e = event || window.event;
+            e.preventDefault();
+
+            var inputBook = $("input[name='book']");
+            var key_word = inputBook.val().trim();
+
+            if (key_word == "") {
+                inputBook.blur();
+            }
+            else {
+                var pageNum = 0;
+                localStorage.setItem("pageNum", pageNum);
+
+                tmpValue.sumBook = 0;
+                postSearchBook({key_word: key_word});
+            }
+
+
+
+        });
+
+        /**
+         * 发送检阅书目信息
+         *
+         * @method postSearchBook
+         * @param config
+         * @returns {null}
+         */
+
+        function postSearchBook(config) {
+
+            var _config = config || {};
+
+            var SEARCH_BOOK_URL = "{:url('/home/search/search')}";
+
+            tmpValue.$loadingGif.show();
+
+            $.ajax({
+                url: SEARCH_BOOK_URL,
+                data: _config,
+
+                success: function (data) {
+
+
+                    tmpValue.$loadingGif.hide();
+                    console.log((new Date()).getMilliseconds());
+                    showBook(data);
+
+
+                },
+                error: function () {
+                    tmpValue.$loadingGif.hide();
+                    warningTipShow("加载失败");
+                }
+            });
+
+            return null;
+        }
+
+        /**
+         * 显示书的信息
+         *
+         * @method showBook
+         * @param data
+         * @returns {null}
+         */
+
+        function showBook(data) {
+
+            var text = "";
+            var cssNum = null;
+            var bookNum = 0;
+
+            var _data = JSON.parse(data);
+
+            localStorage.setItem("page", _data[0]);
+            sessionStorage.setItem("pageNum", localStorage.page);
+
+            if(sessionStorage.sumBook == undefined){
+                sessionStorage.sumBook = 0;
+            }
+
+
+            $("#book .panel-title").text("已找到图书 "+ _data[2] +" 本");
+
+            $.each(_data[1], function (index, value) {
+                console.log(value.href_num)
+                if (value.book_r + "" == "0") {
+                    cssNum = "'danger'";
+                }
+                else {
+                    cssNum = "'success'";
+                }
+                sessionStorage.sumBook++;
+                var book_tp = value.book_tp || "空";
+                text +=
+                        "<li class='li-book'>" +
+                        "<table class='table table-condensed book-msg'>" +
+                        "<caption class='active'><a href='{:url('home/book_info/book_info')}?href_num=" + value.href_num + "'>" + sessionStorage.sumBook + "." + value.book_name + "</a></caption>" +
+
+                        "<tr>" +
+                        "<td>作者</td>" +
+                        "<td>" + value.book_a + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>出版社</td>" +
+                        "<td>" + value.book_p + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>索书号</td>" +
+                        "<td>" + book_tp + "</td>" +
+                        "</tr>" +
+                        "<tr class=" + cssNum + ">" +
+                        "<td>可借</td>" +
+                        "<td>" + value.book_r + "</td>" +
+                        "</tr>" +
+                        "</table>" +
+                        "</li>";
+
+
+
+                bookNum = index;
+            });
+
+
+            $(".ul-book").html(text);
+            document.body.scrollTop = 0;
+
+            $("#footer").show();
+
+            tmpValue.$pagerLi.eq(1).html("<a href='javascript:void(0)'>第" + localStorage.page + "页</a>");
+            if (localStorage.getItem("page") == 1) {
+                tmpValue.$pagerLi.eq(0).addClass("hidden");
+            }
+            else {
+                tmpValue.$pagerLi.eq(0).removeClass("hidden");
+            }
+
+
+            if (bookNum < 19) {
+                tmpValue.$pagerLi.eq(2).addClass("hidden");
+            }
+            else {
+                tmpValue.$pagerLi.eq(2).removeClass("hidden");
+            }
+
+
+            //判断是否还要加载数据
+
+
+            return null;
+        }
+
+        tmpValue.$pagerLi.eq(0).click(function () {
+            sessionStorage.sumBook -= 40;
+            loadPage(Number(localStorage.getItem("page")) - 1);
+        });
+
+        tmpValue.$pagerLi.eq(2).click(function () {
+            loadPage(Number(localStorage.getItem("page")) + 1);
+        });
+
+
+        /**
+         * 加载的页面
+         *
+         * @param page 需要到的页面
+         *
+         * @return null
+         *
+         */
+
+        function loadPage(page) {
+            const URL = "{:url('home/search/search')}";
+
+            tmpValue.$loadingGif.show();
+
+            $.ajax({
+                url: URL,
+                data: {"page": page},
+                success: function (data) {
+
+                    showBook(data);
+                    tmpValue.$loadingGif.hide();
+
+                },
+                error: function () {
+                    warningTipShow("加载失败");
+                    tmpValue.$loadingGif.hide();
+                }
+
+            })
+
+
+        }
+    });
+</script>
 </body>
 </html>

@@ -87,9 +87,7 @@
                 console.log(data);
                 if (data == '您的密码修改成功,请重新登录') {
                     alert('您的密码修改成功,请重新登录');
-                    setTimeout(function () {
-                        window.location.href="{:url('home/index/index')}"
-                    }, 200);
+                    setTimeout("window.location.href=\"{:url('home/index/index')}\"", 200);
                 }
                 else if (data == '旧密码输入错误') {
                     alert('旧密码输入错误,请重新输入');
