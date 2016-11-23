@@ -10,7 +10,8 @@ class Index extends Controller
 
 
     public function index(){
-        /*session(null);
+       /* dump('asdf');
+	session(null);
         exit;*/
         if(session('cookieTxt')&&session('verifyJpg')){
             unlink(session('cookieTxt'));
@@ -34,7 +35,7 @@ class Index extends Controller
             $this->assign('passwd','');
         }
         $this->assign('pic',$dirCode);
-        return $this->fetch('Index/index');
+        return $this->fetch('index/index');
         //跳转登录页
     }
     /**
@@ -79,9 +80,11 @@ class Index extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);//设置跟踪页面的跳转，有时候你打开一个链接，在它内部又会跳到另外一个，就是这样理解
         curl_setopt($ch,CURLOPT_POST,1);//开启post数据的功能，这个是为了在访问链接的同时向网页发送数据，一般数urlencode码
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieTxt);//获取的cookie 保存到指定的 文件路径，我这里是相对路径，可以是$变量
-
+	$header[0]='Set-Cookie:123';
+	curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
+	curl_setopt($ch,CURLOPT_NOBODY,1);
         $content=curl_exec($ch);     //重点来了，上面的众多设置都是为了这个，进行url访问，带着上面的所有设置
-      //  halt($content);
+      // halt($content);
         if(curl_errno($ch)){
             echo 'Curl error: '.curl_error($ch);exit(); //这里是设置个错误信息的反馈
         }
@@ -91,7 +94,7 @@ class Index extends Controller
 
         preg_match('/Set-Cookie:(.*);/iU',$content,$str); //这里采用正则匹配来获取cookie并且保存它到变量$str里，这就是为什么上面可以发送cookie变量的原因
         $cookie = $str[1]; //获得COOKIE（SESSIONID）
-        halt($content);
+       // halt($content);
         curl_close($ch);//关闭会话
         //halt($cookie);
         return     $cookie;//返回cookie
@@ -102,6 +105,7 @@ class Index extends Controller
 
     public function login(){
         //接口登陆
+      //	halt("asdf");
         if(request()->isPost()){
             //Header("Content-Type: image/jpeg");
             //判读密码与用户名

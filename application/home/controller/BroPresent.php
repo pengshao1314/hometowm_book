@@ -154,7 +154,7 @@ class BroPresent extends Controller
          //$this->assign('array_a',$array_a);//备用循环出作者
          $this->assign('date_bro',$date_bro);
          $this->assign('book_place',$book_place);*/
-        return $this->fetch('Index/myLib_borrow');
+        return $this->fetch('index/myLib_borrow');
 
 
     }

@@ -51,7 +51,7 @@ class BroHistory extends Controller
             $this->assign('data',$data);
             $this->assign('page',$page);
             $this->assign('number',count($data));
-            return $this->fetch('Index/mylib_borHistory');
+            return $this->fetch('index/mylib_borHistory');
         }
         else{
             $page=input('page');
@@ -76,7 +76,7 @@ class BroHistory extends Controller
             $this->assign('data',$data);
             $this->assign('page',$page);
             $this->assign('number',count($data));
-            return $this->fetch('Index/mylib_borHistory');
+            return $this->fetch('index/mylib_borHistory');
         }
     }
     public function getHistory($result){

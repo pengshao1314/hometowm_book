@@ -152,6 +152,6 @@ class Fine extends Controller
         }
         $this->assign('con',$con);
         $this->assign('data',$data);
-        return $this->fetch('Index/fine');
+        return $this->fetch('index/fine');
     }
 }
