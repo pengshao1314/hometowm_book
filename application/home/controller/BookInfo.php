@@ -51,6 +51,6 @@ class BookInfo extends Controller
 
         /*$this->assign('book_head',$all_book_c);
         $this->assign('book_content',$all_book);*/
-        return $this->fetch('Index/bookInfo');
+        return $this->fetch('index/bookInfo');
     }
 }
